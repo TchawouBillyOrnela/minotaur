@@ -38,41 +38,41 @@ func room (_ x: Int, _ y: Int) -> Term {
 }
 
 func doors (from: Term, to: Term) -> Goal {
-  return( (from.1 === 4 && from.2 === 4 ) && (to.1 === 4 && to.2 === 3))||
-((from.1 === 4 && from.2 === 3 ) && ( (to.1 === 4 && to.2 === 2)|| (to.1 === 3 && to.2 === 3)))||
-((from.1 === 4 && from.2 === 2) &&  (to.1 === 3 && to.2 === 2))||
-((from.1 === 4 && from.2 === 1 ) && (to.1 === 3 && to.2 === 1))||
-((from.1 === 3 && from.2 === 2 ) && ((to.1 === 3 && to.2 === 1)||(to.1 === 2 && to.2 === 2)))||
-((from.1 === 3 && from.2 === 1 ) && (to.1 === 2 && to.2 === 1))||
-((from.1 === 2 && from.2 === 1 ) && ((to.1 === 1 && to.2 === 1)||(to.1 === 2 && to.2 === 2)))||
-((from.1 === 2 && from.2 === 2 ) && (to.1 === 2 && to.2 === 3))||
-((from.1 === 2 && from.2 === 3 ) && ((to.1 === 2 && to.2 === 4)||(to.1 === 3 && to.2 === 3)))||
-((from.1 === 2 && from.2 === 4) && ((to.1 === 3 && to.2 === 4)||(to.1 === 1 && to.2 === 4)))||
-((from.1 === 1 && from.2 === 4 ) && (to.1 === 1 && to.2 === 3))||
-((from.1 === 1 && from.2 === 3 ) && (to.1 === 1 && to.2 === 2))||
-((from.1 === 1 && from.2 === 2 ) && (to.1 === 1 && to.2 === 1))
+  return( (from.0 === 4 && from.1 === 4 ) && (to.0 === 4 && to.1 === 3))||
+((from.0 === 4 && from.1 === 3 ) && ( (to.0 === 4 && to.1 === 2)|| (to.0 === 3 && to.1 === 3)))||
+((from.0 === 4 && from.1 === 2) &&  (to.0 === 3 && to.1 === 2))||
+((from.0 === 4 && from.1 === 1 ) && (to.0 === 3 && to.1 === 1))||
+((from.0 === 3 && from.1 === 2 ) && ((to.0 === 3 && to.1 === 1)||(to.0 === 2 && to.1 === 2)))||
+((from.0 === 3 && from.1 === 1 ) && (to.0 === 2 && to.1 === 1))||
+((from.0 === 2 && from.1 === 1 ) && ((to.0 === 1 && to.1 === 1)||(to.0 === 2 && to.1 === 2)))||
+((from.0 === 2 && from.1 === 2 ) && (to.0 === 2 && to.1 === 3))||
+((from.0 === 2 && from.1 === 3 ) && ((to.0 === 2 && to.1 === 4)||(to.0 === 3 && to.1 === 3)))||
+((from.0 === 2 && from.1 === 4) && ((to.0 === 3 && to.1 === 4)||(to.0 === 1 && to.1 === 4)))||
+((from.0 === 1 && from.1 === 4 ) && (to.0 === 1 && to.1 === 3))||
+((from.0 === 1 && from.1 === 3 ) && (to.0 === 1 && to.1 === 2))||
+((from.0 === 1 && from.1 === 2 ) && (to.0 === 1 && to.1 === 1))
     // TODO
 }
 
 func entrance (location: Term) -> Goal {
-  return (location.1 === 4 && location.2 === 1)||
-  (location.1 = 4 && location.2 === 4)
+  return (location.0 === 4 && location.1 === 1)||
+  (location.0 = 4 && location.1 === 4)
     // TODO
 }
 
 func exit (location: Term) -> Goal {
-  return (location.1 === 1 && location.1 === 1)||
-  (location.1 = 3 && location.1 === 4)
+  return (location.0 === 1 && location.1 === 1)||
+  (location.0 = 3 && location.1 === 4)
     // TODO
 }
 
 func minotaur (location: Term) -> Goal {
-  return (location.1 === 2 && location.2 === 3)
+  return (location.0 === 2 && location.1 === 3)
     // TODO
 }
 
 func path (from: Term, to: Term, through: Term) -> Goal {
-  return (from.1 === to.1 && from.2 === to.2 && through === List.empty )||
+  return (from.0 === to.0 && from.1 === to.1 && through === List.empty )||
   (doors(from, to) && through === List.empty )||
   (doors(from, through) && doors(through, to) )||
   delayed fresh{ch in fresh {lc in
