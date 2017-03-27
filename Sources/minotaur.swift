@@ -38,58 +38,61 @@ func room (_ x: Int, _ y: Int) -> Term {
 }
 
 func doors (from: Term, to: Term) -> Goal {
-  return( (from.0 === 4 && from.1 === 4 ) && (to.0 === 4 && to.1 === 3))||
-((from.0 === 4 && from.1 === 3 ) && ( (to.0 === 4 && to.1 === 2)|| (to.0 === 3 && to.1 === 3)))||
-((from.0 === 4 && from.1 === 2) &&  (to.0 === 3 && to.1 === 2))||
-((from.0 === 4 && from.1 === 1 ) && (to.0 === 3 && to.1 === 1))||
-((from.0 === 3 && from.1 === 2 ) && ((to.0 === 3 && to.1 === 1)||(to.0 === 2 && to.1 === 2)))||
-((from.0 === 3 && from.1 === 1 ) && (to.0 === 2 && to.1 === 1))||
-((from.0 === 2 && from.1 === 1 ) && ((to.0 === 1 && to.1 === 1)||(to.0 === 2 && to.1 === 2)))||
-((from.0 === 2 && from.1 === 2 ) && (to.0 === 2 && to.1 === 3))||
-((from.0 === 2 && from.1 === 3 ) && ((to.0 === 2 && to.1 === 4)||(to.0 === 3 && to.1 === 3)))||
-((from.0 === 2 && from.1 === 4) && ((to.0 === 3 && to.1 === 4)||(to.0 === 1 && to.1 === 4)))||
-((from.0 === 1 && from.1 === 4 ) && (to.0 === 1 && to.1 === 3))||
-((from.0 === 1 && from.1 === 3 ) && (to.0 === 1 && to.1 === 2))||
-((from.0 === 1 && from.1 === 2 ) && (to.0 === 1 && to.1 === 1))
+  return (from === room(4 ,4)  && to === room(4, 3)) ||
+(from === room(4, 3 ) ) &&  ((to === room(4,2)) || (to === room(3 ,3))) ||
+(from === room(4, 2)) &&  (to === room(3, 2)) ||
+(from === room(4, 1 )) && (to === room(3, 1)) ||
+(from === room(3, 2 )) && ((to === room(3, 1)) || (to === room( 2, 2))) ||
+(from === room(3, 1 )) && (to === room( 2, 1)) ||
+(from === room(2, 1 )) && ((to === room(1, 1)) || (to  === room(2, 2))) ||
+(from === room(2, 2 )) && (to === room(2, 3)) ||
+(from  === room(2, 3 )) && ((to === room(2, 4)) || (to === room(3, 3))) ||
+(from === room(2, 4)) && ((to === room(3, 4)) || (to === room(1, 4))) ||
+(from === room(1, 4 )) && (to === room(1, 3)) ||
+(from === room (1, 3 )) && (to === room (1, 2)) ||
+(from === room(1, 2 )) && (to === room(1, 1))
     // TODO
 }
 
 func entrance (location: Term) -> Goal {
-  return (location.0 === 4 && location.1 === 1)||
-  (location.0 = 4 && location.1 === 4)
+  return (location === room(4, 1) ||
+location === room(4, 4))
     // TODO
 }
 
 func exit (location: Term) -> Goal {
-  return (location.0 === 1 && location.1 === 1)||
-  (location.0 = 3 && location.1 === 4)
+  return (location === room(1, 1) ||
+location === room(3, 4))
     // TODO
 }
 
 func minotaur (location: Term) -> Goal {
-  return (location.0 === 2 && location.1 === 3)
+  return (location === room (2, 3))
     // TODO
 }
 
 func path (from: Term, to: Term, through: Term) -> Goal {
-  return (from.0 === to.0 && from.1 === to.1 && through === List.empty )||
-  (doors(from, to) && through === List.empty )||
-  (doors(from, through) && doors(through, to) )||
+  return (from ===  to && through === List.empty ) ||
+  (doors(from, to) && through === List.empty ) ||
+  (doors(from, through) && doors(through, to) ) ||
   delayed fresh{ch in fresh {lc in
   (path(from, through, ch ) && path(through, to, lc))
-  }}
+}}
     // TODO
 }
 
 func battery (through: Term, level: Term) -> Goal {
-  return (through === List.empty && ((level === 0) ||delayed fresh {y in (level === succ(y) ) )) ||
-  delayed fresh{ch in fresh {lc in fresh {n in
-    (through === List.const(ch, lc) && (level === succ (n)) && winning (lc, n) )
+  return  (delayed fresh {y in
+    (through === List.empty && ((level === zero ) || (level === succ(y) ) ))
+  })
+   delayed fresh{ch in fresh {lc in fresh {n in
+    (through === List.cons(ch, lc) && (level === succ (n)) && battery (lc, n) )
+  }}}
     // TODO
 }
 
 func winning (through: Term, level: Term) -> Goal {
-  return ( battery(through, level) && ( path( (4,1), (3,4), (2,3)) || path( (4,1), (1,1), (2,3) ) ) )||
-   ( battery(through, level) && ( path( (4,4), (3,4), (2,3) ) || path( (4,4), (1,1), (2,3) ) ) )
+  return ( battery(through, level) && ( path( rom(4,1), rom(3,4), rom(2,3)) || path( rom(4,1), rom(1,1), rom(2,3) ) ) )||
+   ( battery(through, level) && ( path( rom(4,4), rom(3,4), rom(2,3) ) || path( rom(4,4), rom(1,1), rom(2,3) ) ) )
     // TODO
 }
