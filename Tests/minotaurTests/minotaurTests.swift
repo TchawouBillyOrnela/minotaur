@@ -69,7 +69,14 @@ class minotaurTests: XCTestCase {
                       battery (through: through, level: toNat (7))
         XCTAssertEqual(resultsOf (goal: goal, variables: [through]).count, 1, "number of paths is incorrect")
     }
-
+//test pour verifier quil y'a un seul chemin(through) possible qui verifie a la fois la fonction path avec from=room(1,4)
+//to=room(4,3); et la fonction battery avec level = 7
+    func testBattery2() {
+        let through = Variable (named: "through")
+        let goal    = path (from: room (1,4), to: room (4,3), through: through) &&
+                      battery (through: through, level: toNat (7))
+        XCTAssertEqual(resultsOf (goal: goal, variables: [through]).count, 1, "number of paths is incorrect")
+    }
     func testLosing() {
         let through = Variable (named: "through")
         let goal    = winning (through: through, level: toNat (6))
@@ -82,6 +89,13 @@ class minotaurTests: XCTestCase {
         XCTAssertEqual(resultsOf (goal: goal, variables: [through]).count, 1, "number of paths is incorrect")
     }
 
+    // on test combien de resultat(chemin) la fonction winning retourne avec level = 10
+    func testWinning2() {
+        let through = Variable (named: "through")
+        let goal    = winning (through: through, level: toNat (10))
+        XCTAssertEqual(resultsOf (goal: goal, variables: [through]).count, 2, "number of paths is incorrect")
+    }
+
 
     static var allTests : [(String, (minotaurTests) -> () throws -> Void)] {
         return [
@@ -91,8 +105,10 @@ class minotaurTests: XCTestCase {
             ("testMinotaur", testMinotaur),
             ("testPath", testPath),
             ("testBattery", testBattery),
+            ("testBattery2", testBattery2),
             ("testLosing", testLosing),
             ("testWinning", testWinning),
+            ("testWinning2", testWinning2),
         ]
     }
 }
